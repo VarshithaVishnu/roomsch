@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Room Scheduler | Room List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+          background-size: cover;
+          background-image: url('static/image.jpg');
+          height: 100vh;
+        }
+        label{
+            color: white;
+        }
+    </style>
+    <script>
+        function deleteRoom(roomId) {
+            fetch(`/delete/room/${roomId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    // After successful deletion, redirect to the list room page
+                    window.location.href = "/list_room"; // Use .href for redirection
+                } else {
+                    console.error('Failed to delete Room');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting Room:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="btn btn-warning" style="float:right; margin-top:1%;">Home</a><br/>
+        <h3 class="text-center">Room List</h3>
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Sr. No.</th>
+                <th>Room name</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for room in rooms %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ room.name }}</td>
+                        <td>
+                            <button onclick="deleteRoom('{{ room.id }}')" class="btn btn-primary">Delete</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+    </div>
+</body>
+</html>
